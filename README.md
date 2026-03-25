@@ -1,6 +1,6 @@
 ## Documentation
 
-The books have been downloaded from [VintageApple.org](https://vintageapple.org/).
+The books have been downloaded from [VintageApple.org](https://vintageapple.org/) or [Bitsavers](https://bitsavers.org/).
 
 ## Tools
 
