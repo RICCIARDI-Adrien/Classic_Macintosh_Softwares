@@ -23,3 +23,10 @@ The following instructions apply to the [Basilisk II](https://basilisk.cebix.net
 * Rename the `MPW Pascal` file into `Pascal` and move it to the `MPW/Tools` directory.
 * Move the `PLibraries` directory to the `MPW/Libraries` directory.
 * Move the `PInterfaces` directory to the `MPW/Interfaces` directory.
+
+### Tips
+
+* The MPW Shell uses various key combinations. On a host PC running Linux, type :
+  * `Alt+Enter` to execute the command on the line where the cursor is located,
+  * `Alt+Super+Enter` to open the Commando interface for the command on the line where the cursor is located,
+  * `Alt+Super+Shift+Enter` to exit from the currently running command (think of Linux `Ctrl+C`).
