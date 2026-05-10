@@ -1,0 +1,1 @@
+pascal -p PRAM_Loader.pas || exit 1link -t APPL -c '????' PRAM_Loader.pas.o "{Libraries}"Runtime.o "{Libraries}"Interface.o "{PLibraries}"PasLib.o -o PRAM_Loader || exit 2echoecho "+++ Build succeeded +++"
