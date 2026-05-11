@@ -1,1 +1,5 @@
-program Minimal_Program;begin	WriteLn('Salut !');end.
+program Minimal_Program;
+
+begin
+	WriteLn('Salut !');
+end.

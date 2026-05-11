@@ -1,1 +1,6 @@
-pascal -p Main.pas || exit 1link -t APPL -c '????' Main.pas.o "{Libraries}"Runtime.o "{Libraries}"Interface.o "{PLibraries}"PasLib.o -o Minimal_Program || exit 2echoecho "+++ Build succeeded +++"	 
+pascal -p Main.pas || exit 1
+
+link -t APPL -c '????' Main.pas.o "{Libraries}"Runtime.o "{Libraries}"Interface.o "{PLibraries}"PasLib.o -o Minimal_Program || exit 2
+
+echo
+echo "+++ Build succeeded +++"
