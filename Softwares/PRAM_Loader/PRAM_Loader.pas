@@ -10,15 +10,39 @@ uses Errors, Files, Folders, OSIntf, Script;
 const
 	FILE_NAME = 'PRAM Loader Preferences';
 
+function GetPreferenceFileFSSpec(var File_Specifications: FSSpec): OSErr;
 var
-	FSSpec_PRAM_Data: FSSpec;
+	Result, Found_Volume_Reference_Number: integer;
+	Found_Directory_ID: longint;
+begin
+	(* The PRAM data file is stored in the system Preferences directory, retrieve its path *)
+	Result := FindFolder(kOnSystemDisk, kPreferencesFolderType, kDontCreateFolder, Found_Volume_Reference_Number, Found_Directory_ID);
+	if Result <> noErr then
+	begin
+		WriteLn('Error while retrieving the Preferences folder information : ', Result);
+		GetPreferenceFileFSSpec := Result;
+		Exit(GetPreferenceFileFSSpec);
+	end;
+
+	(* Is the PRAM copy file present ? *)
+	GetPreferenceFileFSSpec := FSMakeFSSpec(Found_Volume_Reference_Number, Found_Directory_ID, FILE_NAME, File_Specifications);
+end;
 
 procedure SavePRAMToFile;
 var
+	FSSpec_PRAM_Data: FSSpec;
 	File_Reference_Number, Result: integer;
 	Pointer_PRAM_Area: SysPPtr;
 	Count: longint;
 begin
+	Result := GetPreferenceFileFSSpec(FSSpec_PRAM_Data);
+	(* Ignore the "file not found" error because the file is missing when we enter this procedure *)
+	if (Result <> noErr) and (Result <> fnfErr) then
+	begin
+		WriteLn('Error while getting the Preferences file path : ', Result);
+		Exit(SavePRAMToFile);
+	end;
+
 	(* Create the file *)
 	Result := FSpCreate(FSSpec_PRAM_Data, '????', 'pref', smSystemScript);
 	if Result <> noErr then
@@ -58,12 +82,20 @@ end;
 
 procedure LoadPRAMFromFile;
 var
+	FSSpec_PRAM_Data: FSSpec;
 	File_Reference_Number, Result: integer;
 	Local_PRAM_Area: SysParmType;
 	Pointer_PRAM_Area: SysPPtr;
 	Count: longint;
 	Is_Reading_Failed: boolean;
 begin
+	Result := GetPreferenceFileFSSpec(FSSpec_PRAM_Data);
+	if Result <> noErr then
+	begin
+		WriteLn('Error while getting the Preferences file path : ', Result);
+		Exit(LoadPRAMFromFile);
+	end;
+
 	(* Open the file in read mode *)
 	Result := FSpOpenDF(FSSpec_PRAM_Data, fsRdPerm, File_Reference_Number);
 	if Result <> noErr then
@@ -94,20 +126,12 @@ begin
 end;
 
 var
+	FSSpec_PRAM_Data: FSSpec;
 	Result, Found_Volume_Reference_Number: integer;
 	Found_Directory_ID: longint;
 
 begin
-	(* The PRAM data file is stored in the system Preferences directory, retrieve its path *)
-	Result := FindFolder(kOnSystemDisk, kPreferencesFolderType, kDontCreateFolder, Found_Volume_Reference_Number, Found_Directory_ID);
-	if Result <> noErr then
-	begin
-		WriteLn('Error while retrieving the Preferences folder information : ', Result);
-		Halt;
-	end;
-
-	(* Is the PRAM copy file present ? *)
-	Result := FSMakeFSSpec(Found_Volume_Reference_Number, Found_Directory_ID, FILE_NAME, FSSpec_PRAM_Data);
+	Result := GetPreferenceFileFSSpec(FSSpec_PRAM_Data);
 
 	(* The file is present *)
 	if Result = noErr then LoadPRAMFromFile
