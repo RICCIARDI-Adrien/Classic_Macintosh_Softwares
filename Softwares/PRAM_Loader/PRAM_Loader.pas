@@ -3,12 +3,37 @@
  * Author : Adrien RICCIARDI
  * Date : 10/05/2026
  *)
-program PRAM_Loader;
+unit PRAM_Loader;
+
+interface
 
 uses Errors, Files, Folders, OSIntf, Script;
 
 const
 	FILE_NAME = 'PRAM Loader Preferences';
+
+procedure EntryPoint;
+
+implementation
+
+function GetPreferenceFileFSSpec(var File_Specifications: FSSpec): OSErr; forward;
+procedure SavePRAMToFile; forward;
+procedure LoadPRAMFromFile; forward;
+
+(* The first appearing procedure is the entry point *)
+procedure EntryPoint;
+var
+	FSSpec_PRAM_Data: FSSpec;
+	Result: integer;
+begin
+	Result := GetPreferenceFileFSSpec(FSSpec_PRAM_Data);
+
+	(* The file is present *)
+	if Result = noErr then LoadPRAMFromFile
+	(* The file was not found, create it *)
+	else if Result = fnfErr then SavePRAMToFile
+	else WriteLn('Could not determine whether the PRAM data file is present : ', Result);
+end;
 
 function GetPreferenceFileFSSpec(var File_Specifications: FSSpec): OSErr;
 var
@@ -125,17 +150,4 @@ begin
 	if Result <> noErr then WriteLn('Error while writing to the PRAM area : ', Result);
 end;
 
-var
-	FSSpec_PRAM_Data: FSSpec;
-	Result, Found_Volume_Reference_Number: integer;
-	Found_Directory_ID: longint;
-
-begin
-	Result := GetPreferenceFileFSSpec(FSSpec_PRAM_Data);
-
-	(* The file is present *)
-	if Result = noErr then LoadPRAMFromFile
-	(* The file was not found, create it *)
-	else if Result = fnfErr then SavePRAMToFile
-	else WriteLn('Could not determine whether the PRAM data file is present : ', Result);
 end.
