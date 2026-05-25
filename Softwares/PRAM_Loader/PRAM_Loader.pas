@@ -112,7 +112,7 @@ begin
 
 	(* Update the PRAM content *)
 	Pointer_PRAM_Area := GetSysPPtr;
-	MoveLeft(Local_PRAM_Area, Pointer_PRAM_Area^, SizeOf(Local_PRAM_Area));
+	BlockMove(@Local_PRAM_Area, Pointer_PRAM_Area, SizeOf(Local_PRAM_Area));
 	Result := WriteParam;
 end;
 
