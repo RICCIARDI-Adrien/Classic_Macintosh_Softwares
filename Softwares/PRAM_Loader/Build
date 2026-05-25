@@ -1,6 +1,9 @@
 pascal -p PRAM_Loader.pas || exit 1
 
-link -t APPL -c '????' PRAM_Loader.pas.o "{Libraries}"Runtime.o "{Libraries}"Interface.o "{PLibraries}"PasLib.o -o PRAM_Loader || exit 2
+# This command works on System 7.5.3 with MPW 3.3 and MPW Pascal 3.3.3.
+# This command has been adapted from the "Building and Managing Programs in MPW 2nd Edition (1996)" book.
+# Note : the entry point function or procedure must be in uppercase, otherwise it won't be found by the linker.
+link -t INIT -c '????' -rt INIT=128 -ra =resLocked -p -m ENTRYPOINT -o "PRAM Loader" PRAM_Loader.pas.o "{Libraries}"Interface.o || exit 2
 
 echo
 echo "+++ Build succeeded +++"
