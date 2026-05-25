@@ -36,5 +36,5 @@ fi
 # Clear the previously existing archive
 rm -f ${PARAMETER_OUTPUT_ARCHIVE}
 # Create the archive with the specified name, set all files as text type and created by MPW
-${BINARY_SIT} -v -u -o ${PARAMETER_OUTPUT_ARCHIVE} -T TEXT -C MPS ${PARAMETER_INPUT_DIRECTORY}
+${BINARY_SIT} -v -u -o ${PARAMETER_OUTPUT_ARCHIVE} -T TEXT -C 'MPS ' ${PARAMETER_INPUT_DIRECTORY}
 printf "The archive was successfully created.\n"
