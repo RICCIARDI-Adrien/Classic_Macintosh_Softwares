@@ -1,6 +1,6 @@
 ## Documentation
 
-The books have been downloaded from [VintageApple.org](https://vintageapple.org/) or [Bitsavers](https://bitsavers.org/).
+The books are located [here](https://github.com/RICCIARDI-Adrien/Documentation/tree/master/Macintosh/Books).
 
 ## Softwares
 
